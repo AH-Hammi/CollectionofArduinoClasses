@@ -11,7 +11,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <Arduino.h>
-#include "Vector/VectorIterator.h"
+#include "VectorIterator.h"
 
 
 template <typename T>
@@ -19,6 +19,7 @@ class Vector
 {
 private:
 	T * _values;
+	T noValue;
 	size_t _capacity;
 	size_t _size;
 
@@ -29,13 +30,13 @@ private:
 	}
 
 	void makeCapacity(){
-		makeCapacity(_capacity);
+		makeCapacity(_size);
 	}
 
 public:
 	Vector(){
-		_values = NULL;
-		_capacity = 0;
+		_values = new T[1];
+		_capacity = 1;
 		_size = 0;
 	}
 	
@@ -60,7 +61,7 @@ public:
 		{
 			return _values[index];
 		}
-		return NULL;
+		return noValue;
 	}
 	
 	// access specified element
@@ -164,13 +165,12 @@ public:
 	// adds an element to the end
 	void push_back(const T & value){
 		if ((_values != NULL)){
-			if (_size < _capacity){
-				makeCapacity();
-			}
+			makeCapacity(_size+1);
 			_values[_size++] = value;
 		}
 	}
 
+	/*
 	void push_back(const T*& value, size_t count){
 		if ((_values != NULL)){
 			makeCapacity(_size+count);
@@ -178,7 +178,7 @@ public:
 				_values[_size++] = value[i];
 			}
 		}
-	}
+	}*/
 
 	// removes the last element
 	void pop_back(){

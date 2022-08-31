@@ -1,0 +1,7 @@
+{
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega",
+    "sketch": "CollectionofArduinoClasses.ino",
+    "programmer": "arduino:avrispmkii",
+    "port": "COM3"
+}

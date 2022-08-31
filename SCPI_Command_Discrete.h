@@ -2,56 +2,12 @@
 #define SCPI_COMMAND_DISCRETE_H
 
 #include "SCPI_Command.h"
-
-class StateCommandPair
-{
-private:
-	void (*functionPointer)();
-public:
-	String stateName = "";
-	StateCommandPair(){}
-	StateCommandPair(String stateName) {
-		this->stateName = stateName;
-	}
-	StateCommandPair(String stateName, void (*functionPointer)()) {
-		this->functionPointer = functionPointer;
-		this->stateName = stateName;
-	}
-	StateCommandPair(char* stateName, void (*functionPointer)()) {
-		this->functionPointer = functionPointer;
-		this->stateName = String(stateName);
-	}
-	~StateCommandPair() {}
-	virtual void executeFunction(){
-		functionPointer();
-	}
-};
-
-class StateCommandPair_Bool : virtual public StateCommandPair
-{
-private:
-	void (*functionPointer)(bool);
-	bool b1;
-public:
-	StateCommandPair_Bool(char* stateName, void (*functionPointer)(bool), bool b1):StateCommandPair(String(stateName)) {
-		this->functionPointer = functionPointer;
-		this->b1 = b1;
-	}
-	StateCommandPair_Bool(String stateName, void (*functionPointer)(bool), bool b1):StateCommandPair(stateName) {
-		this->functionPointer = functionPointer;
-		this->b1 = b1;
-	}
-	~StateCommandPair_Bool() {}
-	 void executeFunction(){
-		functionPointer(b1);
-	}
-};
+#include "KeyValuePairs.h"
 
 class SCPI_Command_Discrete : virtual public SCPI_Command
 {
 private:
-	StateCommandPair** pairs;
-	short numberOfStates = 0;
+	KeyValuePairs<String, void (*)()> _stateCommandPairs;
 protected:
 	void cutCmdStr (String &cmdStr){
 		cmdStr = cmdStr.substring(cmdStr.indexOf(' '));

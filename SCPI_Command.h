@@ -26,7 +26,7 @@ public:
 	SCPI_Command(String tempKey) : key(tempKey){
 		extractMinKey();
 	}
-	SCPI_Command(void (*in)(), String tempKey) : key(tempKey) {
+	SCPI_Command(String tempKey, void (*in)()) : key(tempKey) {
 		functionPointer = in;
 		extractMinKey();
 	}

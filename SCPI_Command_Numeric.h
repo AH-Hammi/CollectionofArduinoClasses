@@ -34,11 +34,11 @@ private:
 	float maximumValue = 0;
 public:
 	
-	SCPI_Command_Numeric(void (*in)(float), char* tempKey) :SCPI_Command(String(tempKey)) {
+	SCPI_Command_Numeric(char* tempKey, void (*in)(float)) :SCPI_Command(String(tempKey)) {
 		functionPointer = in;
 		noBoundChecking = true;
 	}
-	SCPI_Command_Numeric(void (*in)(float), String tempKey) :SCPI_Command(tempKey) {
+	SCPI_Command_Numeric( String tempKey, void (*in)(float)) :SCPI_Command(tempKey) {
 		functionPointer = in;
 		noBoundChecking = true;
 	}
