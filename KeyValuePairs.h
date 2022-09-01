@@ -1,13 +1,20 @@
 #ifndef KEYVALUEPAIRS_H
 #define KEYVALUEPAIRS_H
 
-#include <Arduino.h>
 #include "Vector/Vector.h"
 
 
-template<class Key,class T> struct KeyValuePair{
-	Key _key;
-	T _value;
+template<class Key,class T> class KeyValuePair{
+	public:
+		Key key;
+		T value;
+		KeyValuePair(){
+		}
+		KeyValuePair(Key key, T value){
+			this->key = key;
+			this->value = value;
+		}
+		~KeyValuePair(){}
 };
 
 // A class with a Key and a Value that return the Value according to the Key.
@@ -49,6 +56,10 @@ public:
 		newPair.key = key;
 		newPair.value = value;
 		_pairs.push_back(newPair);
+	}
+
+	int size(){
+		return _pairs.size();
 	}
 };
 

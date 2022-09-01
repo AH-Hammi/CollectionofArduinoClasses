@@ -18,7 +18,7 @@ template <typename T>
 class Vector
 {
 private:
-	T * _values;
+	T* _values;
 	T noValue;
 	size_t _capacity;
 	size_t _size;
@@ -42,6 +42,12 @@ public:
 	
 	Vector(size_t newCap){
 		reserve(newCap);
+	}
+
+	Vector(T* values, size_t newCap){
+		_values = values;
+		_capacity = newCap;
+		_size = newCap;
 	}
 
 	// Replaces the contents with count copies of value

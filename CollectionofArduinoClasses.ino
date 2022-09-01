@@ -1,11 +1,11 @@
 #include "KeyValuePairs.h"
-#include "SCPI_Parser.h"
-#include "SCPI_Command.h"
-#include "SCPI_Command_Numeric.h"
+#include "SCPI_Parser/SCPI.h"
 
-Vector<float> elements;
+Vector<int> elements;
 
-void addElement(float newElem){
+void(* resetFunc) (void) = 0;
+
+void addElement(int newElem){
 	Serial.println("Adding Element");
 	Serial.println(newElem);
 	elements.push_back(newElem);
@@ -22,9 +22,13 @@ void showList(){
 }
 
 SCPI_Command* commands[]{
-	new SCPI_Command_Numeric("ADD", addElement),
+	new SCPI_Command_Numeric<int>("ADD", addElement),
 	new SCPI_Command("SHOW", showList),
-	new SCPI_Command("QUIT", NULL)
+	new SCPI_Command("QUIT", [](){
+		Serial.println("Quitting");
+		delay(100);
+		resetFunc();
+	})
 };
 
 SCPI_Parser parser(commands, sizeof(commands) / sizeof(SCPI_Command*));
@@ -33,7 +37,6 @@ void setup()
 {
 	Serial.begin(38400);
 	Serial.println("Hello World!");
-	elements.push_back(5.0);
 }
 
 void loop()

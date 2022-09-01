@@ -2,7 +2,7 @@
 #define SCPI_COMMAND_DISCRETE_H
 
 #include "SCPI_Command.h"
-#include "KeyValuePairs.h"
+#include "../KeyValuePairs.h"
 
 class SCPI_Command_Discrete : virtual public SCPI_Command
 {
@@ -16,24 +16,18 @@ protected:
 public:
 	SCPI_Command_Discrete(String tempKey) : SCPI_Command(tempKey){
 	}
-	SCPI_Command_Discrete(String tempKey, StateCommandPair** commands, short numberOfStates) : SCPI_Command(tempKey){
-		this->pairs = commands;
-		this->numberOfStates = numberOfStates;
+	SCPI_Command_Discrete(String tempKey, KeyValuePairs<String, void (*)()> stateCommandPairs) : SCPI_Command(tempKey){
+		_stateCommandPairs = stateCommandPairs;
 	}
 	~SCPI_Command_Discrete() {}
-	void init(StateCommandPair** commands, short numberOfStates ){
-		this->pairs = commands;
-		this->numberOfStates = numberOfStates;
-	}
 	void executeCMD(String stringArguments, String &error){
 		cutCmdStr(stringArguments);
-		for (short i = 0; i < numberOfStates; i++)
-		{
-			if (stringArguments.equalsIgnoreCase(pairs[i]->stateName))
-			{
-				pairs[i]->executeFunction();;
-			}
-		}
+		_stateCommandPairs.at(stringArguments)();
+	}
+
+	// Command to add a new state command pair
+	void addStateCommandPair(String state, void (*functionPointer)()){
+		_stateCommandPairs.add(state, functionPointer);
 	}
 };
 

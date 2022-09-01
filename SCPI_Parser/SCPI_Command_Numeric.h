@@ -3,10 +3,11 @@
 
 #include "SCPI_Command.h"
 
+template<class T>
 class SCPI_Command_Numeric : virtual public SCPI_Command
 {
 private:
-	void (*functionPointer) (float);
+	void (*functionPointer) (T);
 	String prefixes[5][2] = {{"G","E9"},{"M","E6"},{"k","E3"},{"m","E-3"},{"u","e-6"}};
 	String replacePrefixes(String arg){
 		String retString = "";
@@ -29,21 +30,21 @@ private:
 		cmdStr.trim();
 	}
 	bool noBoundChecking = true;
-	float defaultValue = 0;
-	float minimumValue = 0;
-	float maximumValue = 0;
+	T defaultValue = 0;
+	T minimumValue = 0;
+	T maximumValue = 0;
 public:
 	
-	SCPI_Command_Numeric(char* tempKey, void (*in)(float)) :SCPI_Command(String(tempKey)) {
+	SCPI_Command_Numeric(char* tempKey, void (*in)(T)) :SCPI_Command(String(tempKey)) {
 		functionPointer = in;
 		noBoundChecking = true;
 	}
-	SCPI_Command_Numeric( String tempKey, void (*in)(float)) :SCPI_Command(tempKey) {
+	SCPI_Command_Numeric( String tempKey, void (*in)(T)) :SCPI_Command(tempKey) {
 		functionPointer = in;
 		noBoundChecking = true;
 	}
 	~SCPI_Command_Numeric() {}
-	void setBounds(float def, float min, float max){
+	void setBounds(T def, T min, T max){
 		defaultValue = def;
 		minimumValue = min;
 		maximumValue = max;
