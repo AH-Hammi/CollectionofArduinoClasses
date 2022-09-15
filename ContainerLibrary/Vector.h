@@ -11,7 +11,6 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <Arduino.h>
-#include "VectorIterator.h"
 
 
 template <typename T>
@@ -100,7 +99,7 @@ public:
 	}
 
 	// checks whether the container is empty
-	bool empty() const{
+	bool isEmpty(){
 		return _size == 0;
 	}
 
@@ -127,9 +126,7 @@ public:
 
 	// reduces memory usage by freeing unused memory
 	void shrink_to_fit(){
-		if (_size*1.28 < _capacity){
-			reserve(_size*1.28);
-		}
+		reserve(_size);
 	}
 
 	// clears the contents
@@ -197,22 +194,6 @@ public:
 	void resize( size_t count){
 		makeCapacity(count);
 		_size = count;
-	}
-
-	typedef VectorIterator<T> iterator;
-	iterator begin(){
-		return iterator(_values);
-	}
-	iterator end(){
-		return iterator(_values,_size);
-	}
-
-	typedef VectorIterator<const T> const_iterator;
-	const_iterator begin() const{
-		return const_iterator(_values);
-	}
-	const_iterator end() const{
-		return const_iterator(_values,_size);
 	}
 };
 #endif

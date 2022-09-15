@@ -3,7 +3,7 @@
 
 #include "SCPI_Command.h"	// Include the header of SCPI_Command Class
 
-#include "../Vector/Vector.h"	// Include the header of Vector Class
+#include "../ContainerLibrary/Vector.h"	// Include the header of Vector Class
 
 /**
  * @brief SCPI Parser Class

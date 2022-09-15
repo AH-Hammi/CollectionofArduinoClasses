@@ -2,7 +2,7 @@
 #define SCPI_COMMAND_DISCRETE_H
 
 #include "SCPI_Command.h"
-#include "../KeyValuePairs.h"
+#include "../ContainerLibrary/KeyValuePairs.h"
 
 class SCPI_Command_Discrete : virtual public SCPI_Command
 {
