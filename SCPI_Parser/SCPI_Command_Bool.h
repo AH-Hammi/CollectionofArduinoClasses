@@ -3,7 +3,7 @@
 
 #include "SCPI_Command.h"
 
-class SCPI_Command_Bool : virtual public SCPI_Command
+class SCPI_Command_Bool : public SCPI_Command
 {
 private:
 	void (*functionPointerBool) (bool);

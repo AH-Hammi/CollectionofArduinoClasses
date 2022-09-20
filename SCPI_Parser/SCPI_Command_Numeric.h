@@ -4,7 +4,7 @@
 #include "SCPI_Command.h"
 
 template<class T>
-class SCPI_Command_Numeric : virtual public SCPI_Command
+class SCPI_Command_Numeric : public SCPI_Command
 {
 private:
 	void (*functionPointer) (T);

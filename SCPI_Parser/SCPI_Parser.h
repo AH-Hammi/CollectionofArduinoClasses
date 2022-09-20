@@ -3,8 +3,6 @@
 
 #include "SCPI_Command.h"	// Include the header of SCPI_Command Class
 
-#include "../ContainerLibrary/Vector.h"	// Include the header of Vector Class
-
 /**
  * @brief SCPI Parser Class
  * A class to Interpet a Stream and process its content to parse SCPI Commands
@@ -15,7 +13,8 @@ private:
 	/**
 	 * @brief Pointer to an array with the Commands the Parser should interpret
 	 */
-	Vector<SCPI_Command*> _commands;
+	SCPI_Command** _commands;
+	int _commandsSize;
 	String errors;
 	String extractCommand(String cmdStr){
 		cmdStr.remove(cmdStr.indexOf(' '));
@@ -23,8 +22,7 @@ private:
 		return cmdStr;
 	}
 	void processOneCommand(String cmdStr){
-		for(int i=0; i<_commands.size(); i++){
-			//Serial.println(listOfCommands[i]->key);
+		for(int i=0; i<_commandsSize; i++){
 			if(_commands[i]->isKey(extractCommand(cmdStr))){
 				Serial.println("Found Match");
 				Serial.println(_commands[i]->key);
@@ -36,7 +34,8 @@ private:
 
 public:
 	SCPI_Parser(SCPI_Command** cmdList, int numberOfCmds) {
-		_commands = Vector<SCPI_Command*>(cmdList, numberOfCmds);
+		_commands = cmdList;
+		_commandsSize = numberOfCmds;
 	}
 	~SCPI_Parser() {
 

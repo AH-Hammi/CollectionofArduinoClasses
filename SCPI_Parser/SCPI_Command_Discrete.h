@@ -4,7 +4,7 @@
 #include "SCPI_Command.h"
 #include "../ContainerLibrary/KeyValuePairs.h"
 
-class SCPI_Command_Discrete : virtual public SCPI_Command
+class SCPI_Command_Discrete : public SCPI_Command
 {
 private:
 	KeyValuePairs<String, void (*)()> _stateCommandPairs;

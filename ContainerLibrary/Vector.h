@@ -195,5 +195,12 @@ public:
 		makeCapacity(count);
 		_size = count;
 	}
+
+	// Iterate through content and execute function
+	void forEach(void (*func)(T&)){
+		for (size_t i = 0; i < _size; i++){
+			func(_values[i]);
+		}
+	}
 };
 #endif
