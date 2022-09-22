@@ -12,7 +12,7 @@ private:
 		cmdStr.trim();
 	}
 public:
-	SCPI_Command_Bool(void (*in)(bool), String tempKey) :SCPI_Command(tempKey){
+	SCPI_Command_Bool(String tempKey, void (*in)(bool)) :SCPI_Command(tempKey){
 		functionPointerBool = in;
 	}
 	~SCPI_Command_Bool() {}
