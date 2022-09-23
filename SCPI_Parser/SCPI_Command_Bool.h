@@ -6,22 +6,22 @@
 class SCPI_Command_Bool : public SCPI_Command
 {
 private:
-	void (*functionPointerBool) (bool);
 	void cutCmdStr (String &cmdStr){
 		cmdStr = cmdStr.substring(cmdStr.indexOf(' '));
 		cmdStr.trim();
 	}
 public:
+	void (*functionPointer) (bool);
 	SCPI_Command_Bool(String tempKey, void (*in)(bool)) :SCPI_Command(tempKey){
-		functionPointerBool = in;
+		functionPointer = in;
 	}
 	~SCPI_Command_Bool() {}
 	void executeCMD(String stringArguments, String &error){
 		cutCmdStr(stringArguments);
 		if ((stringArguments.equalsIgnoreCase("ON")|| stringArguments.equalsIgnoreCase("1"))){
-			functionPointerBool(true);
+			functionPointer(true);
 		}else if ((stringArguments.equalsIgnoreCase("OFF")|| stringArguments.equalsIgnoreCase("0"))){
-			functionPointerBool(false);
+			functionPointer(false);
 		}else{
 			Serial.println("WRONG ARGUMENT");
 		}
