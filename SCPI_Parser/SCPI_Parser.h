@@ -22,12 +22,17 @@ private:
 		return cmdStr;
 	}
 	void processOneCommand(String cmdStr){
-		for(int i=0; i<_commandsSize; i++){
-			if(_commands[i]->isKey(extractCommand(cmdStr))){
-				Serial.println("Found Match");
-				Serial.println(_commands[i]->key);
-				_commands[i]->executeCMD(cmdStr,errors);
-				break;
+		while (!(isAlphaNumeric(cmdStr[0]) || cmdStr[0] == '*')&& cmdStr != ""){
+			cmdStr = cmdStr.substring(1);
+		}
+		if (cmdStr!=""){
+			for(int i=0; i<_commandsSize; i++){
+				if(_commands[i]->isKey(extractCommand(cmdStr))){
+					Serial.println("Found Match");
+					Serial.println(_commands[i]->key);
+					_commands[i]->executeCMD(cmdStr,errors);
+					break;
+				}
 			}
 		}
 	}
@@ -44,20 +49,14 @@ public:
 		short newSemicolon = 0;
 		String cutStr = "";
 		Serial.println("Got a Command");
-		while ((cmdString.indexOf(';')) > 0){
-			cutStr = cmdString.substring(0,cmdString.indexOf(';'));
-			cmdString = cmdString.substring(cmdString.indexOf(';')+1);
-			while (!(isAlphaNumeric(cutStr[0]) || cutStr[0] == '*')){
-				cutStr = cutStr.substring(1);
-			}
+		newSemicolon = cmdString.indexOf(';'); 
+		while (newSemicolon >= 0){
+			cutStr = cmdString.substring(0,newSemicolon);
+			cmdString = cmdString.substring(newSemicolon+1);
 			processOneCommand(cutStr);
+			newSemicolon = cmdString.indexOf(';'); 
 		}
-		if (cmdString != ""){
-			while (!(isAlphaNumeric(cmdString[0]) || cmdString[0] == '*')){
-				cmdString = cmdString.substring(1);
-			}
-			processOneCommand(cmdString);
-		}
+		processOneCommand(cmdString);
 	}
 
 	String returnError(){
