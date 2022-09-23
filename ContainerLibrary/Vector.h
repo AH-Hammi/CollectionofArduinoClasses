@@ -13,12 +13,12 @@
 #include <Arduino.h>
 
 
-template <typename T>
+template <typename NT>
 class Vector
 {
 private:
-	T* _values;
-	T noValue;
+	NT* _values;
+	NT noValue;
 	size_t _capacity;
 	size_t _size;
 
@@ -34,7 +34,7 @@ private:
 
 public:
 	Vector(){
-		_values = new T[1];
+		_values = new NT[1];
 		_capacity = 1;
 		_size = 0;
 	}
@@ -43,14 +43,14 @@ public:
 		reserve(newCap);
 	}
 
-	Vector(T* values, size_t newCap){
+	Vector(NT* values, size_t newCap){
 		_values = values;
 		_capacity = newCap;
 		_size = newCap;
 	}
 
 	// Replaces the contents with count copies of value
-	void assign( size_t count, const T& value ){
+	void assign( size_t count, const NT& value ){
 		
 		if (_size < count){
 			_size = count;
@@ -61,7 +61,7 @@ public:
 	}
 
 	// access specified element with bounds checking
-	T & at(size_t index){
+	NT & at(size_t index){
 		if (index >= 0 && index < _size)
 		{
 			return _values[index];
@@ -70,27 +70,27 @@ public:
 	}
 	
 	// access specified element
-	T & operator[](size_t index){
+	NT & operator[](size_t index){
 		return at(index);
 	}
 
 	// access the first element
-	T & front(){
+	NT & front(){
 		return at(0);
 	}
 
 	// access the last element
-	T & back(){
+	NT & back(){
 		return at(_size-1);
 	}
 
 	// direct access to the underlying array
-	T * data(){
+	NT * data(){
 		return _values;
 	}
 
-	T* toArray(){
-		T temp[_size];
+	NT* toArray(){
+		NT temp[_size];
 		for (size_t i = 0; i < _size; i++)
 		{
 			temp[i] = at(i);
@@ -110,7 +110,7 @@ public:
 
 	// reserves storage
 	void reserve(size_t new_cap){
-		T* newArr = new T[new_cap];
+		NT* newArr = new NT[new_cap];
 		_capacity = new_cap;
 		for (size_t i = 0; i < _capacity; i++){
 			newArr[i] = _values[i];
@@ -135,10 +135,10 @@ public:
 	}
 
 	// Inserts elements at the specified location in the container. inserts value before pos
-	void insert( size_t pos, size_t count, const T& value ){
+	void insert( size_t pos, size_t count, const NT& value ){
 		makeCapacity(pos+count);
 		makeCapacity(_size+count);
-		T* temp = new T[_capacity];
+		NT* temp = new NT[_capacity];
 		size_t tempPos;
 		for (size_t i = 0; i < pos; i++)
 		{
@@ -166,7 +166,7 @@ public:
 	}
 	
 	// adds an element to the end
-	void push_back(const T & value){
+	void push_back(const NT & value){
 		if ((_values != NULL)){
 			makeCapacity(_size+1);
 			_values[_size++] = value;
@@ -197,7 +197,7 @@ public:
 	}
 
 	// Iterate through content and execute function
-	void forEach(void (*func)(T&)){
+	void forEach(void (*func)(NT&)){
 		for (size_t i = 0; i < _size; i++){
 			func(_values[i]);
 		}

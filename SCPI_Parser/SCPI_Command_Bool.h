@@ -1,9 +1,9 @@
 #ifndef SCPI_COMMAND_BOOL_H
 #define SCPI_COMMAND_BOOL_H
 
-#include "SCPI_Command.h"
+#include "SCPI_Command_Template.h"
 
-class SCPI_Command_Bool : public SCPI_Command
+class SCPI_Command_Bool : public SCPI_Command_Template<bool>
 {
 private:
 	void cutCmdStr (String &cmdStr){
@@ -11,9 +11,7 @@ private:
 		cmdStr.trim();
 	}
 public:
-	void (*functionPointer) (bool);
-	SCPI_Command_Bool(String tempKey, void (*in)(bool)) :SCPI_Command(tempKey){
-		functionPointer = in;
+	SCPI_Command_Bool(String tempKey, void (*in)(bool)) :SCPI_Command_Template<bool>(tempKey,in){
 	}
 	~SCPI_Command_Bool() {}
 	void executeCMD(String stringArguments, String &error){

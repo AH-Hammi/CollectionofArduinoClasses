@@ -1,10 +1,10 @@
 #ifndef SCPI_COMMAND_NUMERIC_H
 #define SCPI_COMMAND_NUMERIC_H
 
-#include "SCPI_Command.h"
+#include "SCPI_Command_Template.h"
 
-template<class T>
-class SCPI_Command_Numeric : public SCPI_Command
+template<class NT>
+class SCPI_Command_Numeric : public SCPI_Command_Template<NT>
 {
 private:
 	String prefixes[5][2] = {{"G","E9"},{"M","E6"},{"k","E3"},{"m","E-3"},{"u","e-6"}};
@@ -29,27 +29,25 @@ private:
 		cmdStr.trim();
 	}
 	bool noBoundChecking = true;
-	T defaultValue = 0;
-	T minimumValue = 0;
-	T maximumValue = 0;
+	NT defaultValue = 0;
+	NT minimumValue = 0;
+	NT maximumValue = 0;
 public:
-	void (*functionPointer) (T);
-	SCPI_Command_Numeric(char* tempKey, void (*in)(T)) :SCPI_Command(String(tempKey)) {
-		functionPointer = in;
+	void (*functionPointer) (NT);
+	SCPI_Command_Numeric(char* tempKey, void (*in)(NT)) :SCPI_Command_Template<NT>(String(tempKey),in){
 		noBoundChecking = true;
 	}
-	SCPI_Command_Numeric( String tempKey, void (*in)(T)) :SCPI_Command(tempKey) {
-		functionPointer = in;
+	SCPI_Command_Numeric( String tempKey, void (*in)(NT)) :SCPI_Command_Template<NT>(tempKey,in){
 		noBoundChecking = true;
 	}
 	~SCPI_Command_Numeric() {}
-	void setBounds(T def, T min, T max){
+	void setBounds(NT def, NT min, NT max){
 		defaultValue = def;
 		minimumValue = min;
 		maximumValue = max;
 		noBoundChecking = false;
 	}
-	void executeCMD(String stringArguments, String &error){
+	virtual void executeCMD(String stringArguments, String &error){
 		cutCmdStr(stringArguments);
 		String lowerCaseArguments = stringArguments;
 		lowerCaseArguments.toLowerCase();
