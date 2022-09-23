@@ -4,7 +4,7 @@
 class SCPI_Command
 {
 private:
-	void (*functionPointer) ();
+	
 	String minKey = "";
 	void extractMinKey(){
 		int counter = 0;
@@ -20,6 +20,7 @@ private:
 		
 	}
 public:
+	void (*functionPointer) ();
 	const String key;
 	SCPI_Command() : key("EMPTY"){
 	}
@@ -37,5 +38,8 @@ public:
 	virtual void executeCMD(String stringArguments, String &error){
 		functionPointer();
 	}
+	// virtual operator void * (void){
+	// 	return functionPointer;
+	// } 
 };
 #endif
