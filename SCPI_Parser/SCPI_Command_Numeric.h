@@ -7,7 +7,6 @@ template<class T>
 class SCPI_Command_Numeric : public SCPI_Command
 {
 private:
-	void (*functionPointer) (T);
 	String prefixes[5][2] = {{"G","E9"},{"M","E6"},{"k","E3"},{"m","E-3"},{"u","e-6"}};
 	String replacePrefixes(String arg){
 		String retString = "";
@@ -34,7 +33,7 @@ private:
 	T minimumValue = 0;
 	T maximumValue = 0;
 public:
-	
+	void (*functionPointer) (T);
 	SCPI_Command_Numeric(char* tempKey, void (*in)(T)) :SCPI_Command(String(tempKey)) {
 		functionPointer = in;
 		noBoundChecking = true;
@@ -64,6 +63,10 @@ public:
 			float value = replacePrefixes(stringArguments).toFloat();
 			if (noBoundChecking||(value >= minimumValue && value <= maximumValue)){
 				functionPointer(value);
+			}else if (value < minimumValue){
+				Serial.println("Value below lower Bound");
+			}else if (value>maximumValue){
+				Serial.println("Value above upper Bound");
 			}
 		}
 	}
