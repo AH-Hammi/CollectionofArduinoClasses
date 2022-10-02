@@ -3,18 +3,18 @@
 
 
 // A class to implement Array to Arduino, with some features of std::array
-template <typename NT, int SIZE>
+template <typename T, int SIZE>
 class Array
 {
 private:
-	NT _values[SIZE];
+	T _values[SIZE];
 
 public:
 	Array(){
 	}
 
 	// access specified element with bounds checking
-	NT & at(int index){
+	T & at(int index){
 		if (index >= 0 && index < SIZE)
 		{
 			return _values[index];
@@ -22,22 +22,22 @@ public:
 	}
 
 	// access specified element
-	NT & operator[](int index){
+	T & operator[](int index){
 		return at(index);
 	}
 
 	// access the first element
-	NT & front(){
+	T & front(){
 		return _values[0];
 	}
 
 	// access the last element
-	NT & back(){
+	T & back(){
 		return _values[SIZE-1];
 	}
 
 	// Returns a pointer to the first element of the array
-	NT* data(){
+	T* data(){
 		return _values;
 	}
 
@@ -48,18 +48,18 @@ public:
 
 	// Clears the array
 	void clear(){
-		forEach([](NT& elem){
-			elem = NT();
+		forEach([](T& elem){
+			elem = T();
 		});
 	}
 
 	// Erases one element of the Array
 	void erase(int index){
-		at(index) = NT();
+		at(index) = T();
 	}
 
 	// fill the container with specified value
-	void fill(const NT& value){
+	void fill(const T& value){
 		for (int i = 0; i < SIZE; i++)
 		{
 			_values[i] = value;
@@ -67,8 +67,8 @@ public:
 	}
 
 	// swaps the contents
-	void swap(Array<NT, SIZE> & other){
-		NT temp;
+	void swap(Array<T, SIZE> & other){
+		T temp;
 		for (int i = 0; i < SIZE; i++)
 		{
 			temp = _values[i];
@@ -78,7 +78,7 @@ public:
 	}
 
 	// Executes the function for each element in the array
-	void forEach(void (*func)(NT&)){
+	void forEach(void (*func)(T&)){
 		for (int i = 0; i < SIZE; i++)
 		{
 			func(_values[i]);
@@ -86,7 +86,7 @@ public:
 	}
 
 	// Executes the function for each element in the array and finds the first element that matches the condition
-	NT find(bool (*func)(NT&)){
+	T find(bool (*func)(T&)){
 		for (int i = 0; i < SIZE; i++)
 		{
 			if (func(_values[i]))
@@ -94,12 +94,12 @@ public:
 				return _values[i];
 			}
 		}
-		return NT();
+		return T();
 	}
 
 	// Executes the function for each element in the array and finds all elements that match the condition
-	Array<NT, SIZE> findAll(bool (*func)(NT&)){
-		Array<NT, SIZE> temp;
+	Array<T, SIZE> findAll(bool (*func)(T&)){
+		Array<T, SIZE> temp;
 		int j = 0;
 		for (int i = 0; i < SIZE; i++)
 		{

@@ -15,13 +15,13 @@
 #include "Vector.h"
 
 
-template<class Key,class NT> class KeyValuePair{
+template<class Key,class Val> class KeyValuePair{
 	public:
 		Key key;
-		NT value;
+		Val value;
 		KeyValuePair(){
 		}
-		KeyValuePair(Key key, NT value){
+		KeyValuePair(Key key, Val value){
 			this->key = key;
 			this->value = value;
 		}
@@ -29,14 +29,14 @@ template<class Key,class NT> class KeyValuePair{
 };
 
 // A class with a Key and a Value that return the Value according to the Key.
-template<class Key,class NT> class KeyValuePairs{
+template<class Key,class Val> class KeyValuePairs{
 private:
-	Vector<KeyValuePair<Key,NT>> _pairs;
+	Vector<KeyValuePair<Key,Val>> _pairs;
 public:
 	KeyValuePairs(){
 	}
 
-	KeyValuePairs(KeyValuePair<Key,NT>* pairs, size_t count){
+	KeyValuePairs(KeyValuePair<Key,Val>* pairs, size_t count){
 		for (size_t i = 0; i < count; i++){
 			_pairs.push_back(pairs[i]);
 		}
@@ -47,7 +47,7 @@ public:
 	}
 	
 	// Returns the value associated with the key.
-	NT at(Key key){
+	Val at(Key key){
 		for (int i = 0; i < _pairs.size(); i++)
 		{
 			if (_pairs[i].key == key){
@@ -57,17 +57,17 @@ public:
 	}
 	
 	// Returns the value associated with the key.
-	NT operator[](Key key){
+	Val operator[](Key key){
 		return at(key);
 	}
 
 	// Returns the value associated with the index
-	NT at(size_t index){
+	Val at(size_t index){
 		return _pairs[index].value;
 	}
 
 	// Returns the value associated with the index
-	NT operator[](size_t index){
+	Val operator[](size_t index){
 		return at(index);
 	}
 
@@ -87,24 +87,24 @@ public:
 	}
 
 	// Add a new KeyValuePair to the list.
-	void add(Key key, NT value){
-		_pairs.push_back(KeyValuePair<Key,NT>(key, value));
+	void add(Key key, Val value){
+		_pairs.push_back(KeyValuePair<Key,Val>(key, value));
 	}
 
 	// Adds all the elements of Another Key Value Pairs to this list.
-	void addAll(KeyValuePairs<Key,NT>& another){
+	void addAll(KeyValuePairs<Key,Val>& another){
 		for (int i = 0; i < another.size(); i++){
 			_pairs.push_back(another._pairs[i]);
 		}
 	}
 
 	// Insert a new KeyValuePair to the list.
-	void insert(Key key, NT value, int index){
-		_pairs.insert(KeyValuePair<Key,NT>(key, value), index);
+	void insert(Key key, Val value, int index){
+		_pairs.insert(KeyValuePair<Key,Val>(key, value), index);
 	}
 
 	//inserts an element or assigns to the current element if the key already exists 
-	void insertOrAssign(Key key, NT value){
+	void insertOrAssign(Key key, Val value){
 		for (int i = 0; i < _pairs.size(); i++)
 		{
 			if (_pairs[i].key == key){
@@ -112,7 +112,7 @@ public:
 				return;
 			}
 		}
-		_pairs.push_back(KeyValuePair<Key,NT>(key, value));
+		_pairs.push_back(KeyValuePair<Key,Val>(key, value));
 	} 
 
 	// Erases Elements from the KeyValuePairs
@@ -138,7 +138,7 @@ public:
 	}
 
 	//finds element with specific key 
-	KeyValuePair<Key,NT>* find(Key key){
+	KeyValuePair<Key,Val>* find(Key key){
 		for (int i = 0; i < _pairs.size(); i++)
 		{
 			if (_pairs[i].key == key){
@@ -154,12 +154,12 @@ public:
 	}
 
 	//Returns a Pointer to the array with the KeyValuePairs
-	KeyValuePair<Key,NT>* getPairs(){
+	KeyValuePair<Key,Val>* getPairs(){
 		return _pairs.data();
 	}
 
 	// Returns one Pair from the list.
-	KeyValuePair<Key,NT>* getPair(int index){
+	KeyValuePair<Key,Val>* getPair(int index){
 		return &_pairs[index];
 	}
 
