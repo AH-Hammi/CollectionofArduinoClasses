@@ -34,7 +34,7 @@ private:
 	NT maximumValue = 0;
 public:
 	void (*functionPointer) (NT);
-	SCPI_Command_Numeric(char* tempKey, void (*in)(NT)) :SCPI_Command_Template<NT>(String(tempKey),in){
+	SCPI_Command_Numeric(const char* tempKey, void (*in)(NT)) :SCPI_Command_Template<NT>(String(tempKey),in){
 		noBoundChecking = true;
 	}
 	SCPI_Command_Numeric( String tempKey, void (*in)(NT)) :SCPI_Command_Template<NT>(tempKey,in){

@@ -18,9 +18,6 @@ public:
 	virtual void executeCMD(String stringArguments, String &error){
 		return;
 	}
-	operator void*(){
-		return functionPointer;
-	} 
 };
 
 #endif
