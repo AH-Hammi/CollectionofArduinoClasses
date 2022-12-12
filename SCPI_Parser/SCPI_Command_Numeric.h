@@ -25,46 +25,56 @@ private:
 		return retString;
 	}
 	void cutCmdStr (String &cmdStr){
-		cmdStr = cmdStr.substring(cmdStr.indexOf(' '));
-		cmdStr.trim();
+		if (cmdStr.indexOf(' ') == -1){
+			cmdStr = "";
+			return;
+		}else{
+			cmdStr = cmdStr.substring(cmdStr.indexOf(' '));
+			cmdStr.trim();
+		}
 	}
-	bool noBoundChecking = true;
+	bool boundChecking = false;
 	NT defaultValue = 0;
 	NT minimumValue = 0;
 	NT maximumValue = 0;
 public:
-	void (*functionPointer) (NT);
 	SCPI_Command_Numeric(const char* tempKey, void (*in)(NT)) :SCPI_Command_Template<NT>(String(tempKey),in){
-		noBoundChecking = true;
 	}
 	SCPI_Command_Numeric( String tempKey, void (*in)(NT)) :SCPI_Command_Template<NT>(tempKey,in){
-		noBoundChecking = true;
 	}
 	~SCPI_Command_Numeric() {}
 	void setBounds(NT def, NT min, NT max){
 		defaultValue = def;
 		minimumValue = min;
 		maximumValue = max;
-		noBoundChecking = false;
+		boundChecking = true;
 	}
 	virtual void executeCMD(String stringArguments, String &error){
 		cutCmdStr(stringArguments);
 		String lowerCaseArguments = stringArguments;
 		lowerCaseArguments.toLowerCase();
-		if (lowerCaseArguments=="default"||lowerCaseArguments=="def"){
-			functionPointer(defaultValue);
-		}else if (lowerCaseArguments == "minimum"|| lowerCaseArguments == "min"){
-			functionPointer(minimumValue);
-		}else if (lowerCaseArguments == "maximum" || lowerCaseArguments == "max"){
-			functionPointer(maximumValue);
-		}else{
-			float value = replacePrefixes(stringArguments).toFloat();
-			if (noBoundChecking||(value >= minimumValue && value <= maximumValue)){
-				functionPointer(value);
-			}else if (value < minimumValue){
-				Serial.println("Value below lower Bound");
-			}else if (value>maximumValue){
-				Serial.println("Value above upper Bound");
+		Serial.println(lowerCaseArguments);
+		if (!boundChecking){
+			functionPointer((NT)replacePrefixes(stringArguments).toDouble());
+			return;
+		}else{		
+			if (lowerCaseArguments=="default"||lowerCaseArguments=="def"){
+				functionPointer(defaultValue);
+			}else if (lowerCaseArguments == "minimum"|| lowerCaseArguments == "min"){
+				functionPointer(minimumValue);
+			}else if (lowerCaseArguments == "maximum" || lowerCaseArguments == "max"){
+				functionPointer(maximumValue);
+			}else{
+				double value = replacePrefixes(stringArguments).toDouble();
+				Serial.println(value);
+				if ((value >= minimumValue && value <= maximumValue)){
+					delay(100);
+					functionPointer((NT)value);
+				}else if (value < minimumValue){
+					Serial.println("Value below lower Bound");
+				}else if (value>maximumValue){
+					Serial.println("Value above upper Bound");
+				}
 			}
 		}
 	}

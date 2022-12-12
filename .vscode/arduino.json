@@ -3,5 +3,5 @@
     "board": "arduino:avr:mega",
     "sketch": "CollectionofArduinoClasses.ino",
     "programmer": "arduino:avrispmkii",
-    "port": "COM3"
+    "port": "/dev/ttyUSB0"
 }

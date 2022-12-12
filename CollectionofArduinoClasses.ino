@@ -4,25 +4,30 @@
 #include "SCPI_Parser/SCPI.h"
 //#include "ContainerLibrary/Array.h"
 
-Vector<int> elements;
+Vector<double> elements;
 
 void(* resetFunc) (void) = 0; //declare reset function @ address 0
 
+SCPI_Command_Numeric<double> add("ADD", [](double newElem){
+	Serial.println("Adding Element");
+	Serial.println(newElem);
+	delay(1000);
+	elements.push_back(newElem);
+});
+
+SCPI_Command show("SHOW", [](){
+	Serial.println("Showing List");
+	Serial.println("Size: " + String(elements.size()));
+	Serial.println("Capacity: " + String(elements.capacity()));
+	Serial.println("Elements:");
+	for (int i = 0; i < elements.size(); i++){
+		Serial.println(elements[i]);
+	}
+});
+
 SCPI_Command* commands[]{
-	new SCPI_Command_Numeric<int>("ADD", [](int newElem){
-		Serial.println("Adding Element");
-		Serial.println(newElem);
-		elements.push_back(newElem);
-	}),
-	new SCPI_Command("SHOW", [](){
-		Serial.println("Showing List");
-		Serial.println("Size: " + String(elements.size()));
-		Serial.println("Capacity: " + String(elements.capacity()));
-		Serial.println("Elements:");
-		for (int i = 0; i < elements.size(); i++){
-			Serial.println(elements[i]);
-		}
-	}),
+	&add,
+	&show,
 	new SCPI_Command("QUIT", [](){
 		Serial.println("Quitting");
 		delay(100);

@@ -30,6 +30,7 @@ private:
 				if(_commands[i]->isKey(extractCommand(cmdStr))){
 					Serial.println("Found Match");
 					Serial.println(_commands[i]->key);
+					delay(100);
 					_commands[i]->executeCMD(cmdStr,errors);
 					break;
 				}
@@ -49,8 +50,9 @@ public:
 		short newSemicolon = 0;
 		String cutStr = "";
 		Serial.println("Got a Command");
+		delay(100);
 		newSemicolon = cmdString.indexOf(';'); 
-		while (newSemicolon >= 0){
+		while (newSemicolon > 0){
 			cutStr = cmdString.substring(0,newSemicolon);
 			cmdString = cmdString.substring(newSemicolon+1);
 			processOneCommand(cutStr);
